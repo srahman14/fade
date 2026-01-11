@@ -4,7 +4,7 @@
 
 ---
 
-![fade home](images/home.png)
+![fade home](images/home_2.png)
 
 ---
 
