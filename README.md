@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# fade — private, self‑destructing chat rooms
 
-## Getting Started
+`fade` is a minimal Next.js app providing private, self‑destructing chat rooms for short-lived, two-person conversations. It uses Upstash (Redis + Realtime) for pub/sub and temporary storage, `elysia` for typed API routes, and the Next.js App Router for the UI.
 
-First, run the development server:
+## Features
+
+- Private rooms with a 2-user limit (enforced via middleware cookie `x-auth-token`).
+- Messages are stored in Redis and expire when the room TTL ends.
+- Real‑time messaging using `@upstash/realtime`.
+- Create/destroy rooms via API; room destruction deletes messages and metadata.
+- Lightweight client generated with `treaty` against the server API.
+
+## Tech stack
+
+- Next.js (App Router)
+- React + React Query (`@tanstack/react-query`)
+- Upstash Redis & Realtime (`@upstash/redis`, `@upstash/realtime`)
+- Elysia + Eden (`elysia`, `@elysiajs/eden`) for server routing and type-safe client
+- TypeScript
+
+## Quickstart
+
+Prerequisites:
+
+- Node 18+ (or matching your environment)
+- An Upstash Redis instance (REST API + Realtime)
+
+Environment variables:
+
+- `UPSTASH_REDIS_REST_URL` — Upstash REST URL
+- `UPSTASH_REDIS_REST_TOKEN` — Upstash REST token
+- `NEXT_PUBLIC_APP_URL` — optional, used to build client base URL for SSR
+
+1. Clone repo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone git@github.com:srahman14/fade.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install and run:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open http://localhost:3000 and click Create Secure Room to start.
 
-## Learn More
+## Project structure (high level)
 
-To learn more about Next.js, take a look at the following resources:
+src/
+├─ app/
+│  ├─ page.tsx                     # lobby UI
+│  ├─ room/
+│  │  └─ [roomId]/
+│  │     └─ page.tsx               # room UI
+│  └─ api/
+│     ├─ realtime/
+│     │  └─ route.ts               # upstash realtime handler
+│     └─ [[...slugs]]/
+│        └─ route.ts               # elysia API for rooms & messages
+│        └─ auth.ts                # elysia API for Auth
+│
+├─ lib/
+│  ├─ realtime.ts                  # realtime schema + bindings
+│  ├─ realtime-client.ts           # realtime client hook
+│  ├─ redis.ts                     # upstash redis helper
+│  └─ client.ts                    # treaty client
+│
+└─ proxy.ts                        # middleware for auth / room access
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Increase room capacity by changing the check in `src/proxy.ts`.
+- Increase TTL in /api/[[...slugs]]/route.ts (ROOM_TTL_SECONDS)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See the `LICENSE` file in the repository.
