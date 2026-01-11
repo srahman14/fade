@@ -2,6 +2,12 @@
 
 `fade` is a minimal Next.js app providing private, self‑destructing chat rooms for short-lived, two-person conversations. It uses Upstash (Redis + Realtime) for pub/sub and temporary storage, `elysia` for typed API routes, and the Next.js App Router for the UI.
 
+---
+
+![fade home](images/home.png)
+
+---
+
 ## Features
 
 - Private rooms with a 2-user limit (enforced via middleware cookie `x-auth-token`).
