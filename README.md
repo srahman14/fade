@@ -4,7 +4,11 @@
 
 ---
 
+<<<<<<< HEAD
 ![fade home page](images/home.png)
+=======
+![fade home](images/home_2.png)
+>>>>>>> ec4492c764e281dd85c6f259a5bf0cf9e9561ebb
 
 ---
 
@@ -53,7 +57,7 @@ npm run dev
 Open http://localhost:3000 and click Create Secure Room to start.
 
 ## Project structure (high level)
-
+```bash
 src/
 ├─ app/
 │  ├─ page.tsx                     # lobby UI
@@ -74,7 +78,7 @@ src/
 │  └─ client.ts                    # treaty client
 │
 └─ proxy.ts                        # middleware for auth / room access
-
+```
 - Increase room capacity by changing the check in `src/proxy.ts`.
 - Increase TTL in /api/[[...slugs]]/route.ts (ROOM_TTL_SECONDS)
 
