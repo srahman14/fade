@@ -4,11 +4,9 @@
 
 ---
 
-<<<<<<< HEAD
 ![fade home page](images/home.png)
 =======
 ![fade home](images/home_2.png)
->>>>>>> ec4492c764e281dd85c6f259a5bf0cf9e9561ebb
 
 ---
 
